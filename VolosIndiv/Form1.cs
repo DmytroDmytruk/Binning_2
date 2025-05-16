@@ -11,8 +11,8 @@ namespace VolosIndiv
 {
     public partial class Form1 : Form
     {
-        List<int> x;
-        List<int> y;
+        List<float> x;
+        List<float> y;
         List<int> OneCol;
 
         bool IsWorking = false;
@@ -86,8 +86,8 @@ namespace VolosIndiv
 
         private void зТекстівToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            x = new List<int>();
-            y = new List<int>();
+            x = new List<float>();
+            y = new List<float>();
 
 
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
@@ -173,8 +173,8 @@ namespace VolosIndiv
 
         private void GetDataFromFileTwo()
         {
-            x = new List<int>();
-            y = new List<int>();
+            x = new List<float>();
+            y = new List<float>();
 
             int c1 = 0;
             int c2 = 1;
@@ -197,13 +197,15 @@ namespace VolosIndiv
                 {
                     string[] res = line.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    int v1 = 0;
-                    int v2 = 0;
+                    float v1 = 0;
+                    float v2 = 0;
 
                     if (res.Length >= c2)
                     {
-                        int.TryParse(res[c1 - 1], out v1);
-                        int.TryParse(res[c2 - 1], out v2);
+                        string s1 = res[c1 - 1].Replace('.', ',');
+                        string s2 = res[c2 - 1].Replace('.', ',');
+                        float.TryParse(s1, out v1);
+                        float.TryParse(s2, out v2);
                     }
 
                     x.Add(v1);
@@ -214,8 +216,8 @@ namespace VolosIndiv
 
         private void GetDataFromFileOne()
         {
-            x = new List<int>();
-            y = new List<int>();
+            x = new List<float>();
+            y = new List<float>();
             OneCol = new List<int>();
 
             int c1 = 0;
@@ -358,7 +360,7 @@ namespace VolosIndiv
 
         private List<DataOut> avg1(int M)
         {
-            int minX = x.Min();
+            float minX = x.Min();
             double step = (x.Max() - x.Min()) / (double)M;
             List<DataOut> dataOut = new List<DataOut>();
 
