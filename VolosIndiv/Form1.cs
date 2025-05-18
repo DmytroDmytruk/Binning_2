@@ -353,8 +353,13 @@ namespace VolosIndiv
             int j = 1;
             foreach (var item in dataOut)
             {
-                dataGridView3.Rows.Add("{j}", "{Math.Round(item.LeftBorder, 2)} - {Math.Round(item.RightBorder, 2)}", "{item.p}", "{item.P}", "{item.ItemCount}");
-                j++;
+                dataGridView3.Rows.Add(
+                    j,
+                    string.Format("{0}-{1}", Math.Round(item.LeftBorder, 2), Math.Round(item.RightBorder, 2)),
+                    item.p,
+                    item.P,
+                    item.ItemCount
+                );j++;
             }
         }
 
