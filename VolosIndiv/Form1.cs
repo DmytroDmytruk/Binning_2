@@ -53,15 +53,16 @@ namespace VolosIndiv
                 {
                     for (int i = 0; i < dgv.Rows.Count; i++)
                     {
-                        string temp = "";
+                        List<string> values = new List<string>();
+
                         for (int j = 0; j < dgv.Columns.Count; j++)
                         {
-                            if (dgv.Rows[i].Cells[j].Value == null)
-                                continue;
-
-                            temp += dgv.Rows[i].Cells[j].Value.ToString() + "\t";
+                            var cellValue = dgv.Rows[i].Cells[j].Value;
+                            if (cellValue != null)
+                                values.Add(cellValue.ToString());
                         }
-                        sw.WriteLine(temp);
+
+                        sw.WriteLine(string.Join("\t", values));
                     }
                 }
                 MessageBox.Show("Дані збережено");
@@ -280,7 +281,7 @@ namespace VolosIndiv
             dataGridView2.Rows.Clear();
             for (int i = 0; i < dataOut.Count; i++)
             {
-                dataGridView2.Rows.Add(i + 1, dataOut[i].LeftBorder+" - "+dataOut[i].RightBolder, dataOut[i].L, dataOut[i].V, dataOut[i].dV, dataOut[i].ItemCount);
+                dataGridView2.Rows.Add(i + 1, dataOut[i].LeftBorder+"-"+dataOut[i].RightBolder, dataOut[i].L, dataOut[i].V, dataOut[i].dV, dataOut[i].ItemCount);
             }
         }
 
