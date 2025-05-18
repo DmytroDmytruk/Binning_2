@@ -396,12 +396,11 @@ namespace VolosIndiv
                 var dataTemp = new DataOut();
                 dataTemp.ItemCount = itemCount;
 
-                dataTemp.dV = Math.Sqrt(avgQuadV - avgResV * avgResV);
-                dataTemp.L = avgResL;
-                dataTemp.V = avgResV;
-
-                dataTemp.LeftBorder = leftBorder;
-                dataTemp.RightBolder = rightBorder;
+                dataTemp.dV = Math.Round(Math.Sqrt(avgQuadV - avgResV * avgResV), 4);
+                dataTemp.L = Math.Round(avgResL, 4);
+                dataTemp.V = Math.Round(avgResV, 4);
+                dataTemp.LeftBorder = Math.Round(leftBorder, 4);
+                dataTemp.RightBolder = Math.Round(rightBorder, 4);
 
                 dataOut.Add(dataTemp);
             }
@@ -448,12 +447,11 @@ namespace VolosIndiv
 
                 var dataTemp = new DataOut();
                 dataTemp.ItemCount = itemCount;
-                dataTemp.dV = Math.Sqrt(avgQuadV - avgResV * avgResV);
-                dataTemp.L = avgResL;
-                dataTemp.V = avgResV;
-
-                dataTemp.LeftBorder = x[startIdx];
-                dataTemp.RightBolder = x[endIdx - 1];
+                dataTemp.dV = Math.Round(Math.Sqrt(avgQuadV - avgResV * avgResV), 4);
+                dataTemp.L = Math.Round(avgResL, 4);
+                dataTemp.V = Math.Round(avgResV, 4);
+                dataTemp.LeftBorder = Math.Round(x[startIdx], 4);
+                dataTemp.RightBolder = Math.Round(x[endIdx - 1], 4);
 
                 dataOut.Add(dataTemp);
             }
@@ -507,12 +505,11 @@ namespace VolosIndiv
                 var dataTemp = new DataOut();
                 dataTemp.ItemCount = itemCount;
 
-                dataTemp.dV = Math.Sqrt(avgQuadV - avgResV * avgResV);
-                dataTemp.L = avgResL;
-                dataTemp.V = avgResV;
-
-                dataTemp.LeftBorder = leftBorder;
-                dataTemp.RightBolder = rightBorder;
+                dataTemp.dV = Math.Round(Math.Sqrt(avgQuadV - avgResV * avgResV), 4);
+                dataTemp.L = Math.Round(avgResL, 4);
+                dataTemp.V = Math.Round(avgResV, 4);
+                dataTemp.LeftBorder = Math.Round(leftBorder, 4);
+                dataTemp.RightBolder = Math.Round(rightBorder, 4);
 
                 dataOut.Add(dataTemp);
             }
