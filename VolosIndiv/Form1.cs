@@ -411,7 +411,6 @@ namespace VolosIndiv
 
         private List<DataOut> avg2(int M)
         {
-            double step = x.Count / M;
             List<DataOut> dataOut = new List<DataOut>();
 
             var xx = x.ToArray();
@@ -420,43 +419,41 @@ namespace VolosIndiv
             x = xx.ToList();
             y = yy.ToList();
 
+            int binSize = x.Count / M;
+
             for (int i = 0; i < M; i++)
             {
+                int startIdx = i * binSize;
+                int endIdx = (i == M - 1) ? x.Count : (i + 1) * binSize;
+
                 double avgQuadL = 0;
                 double avgQuadV = 0;
                 double avgResL = 0;
                 double avgResV = 0;
                 double itemCount = 0;
 
-                double leftBorder = i * step;
-                double rightBorder = (i + 1) * step;
-
-                for (int j = 0; j < x.Count; j++)
+                for (int j = startIdx; j < endIdx; j++)
                 {
-                    if (j >= leftBorder && j < rightBorder)
-                    {
-                        avgResL += x[j];
-                        avgQuadL += x[j] * x[j];
-                        avgResV += y[j];
-                        avgQuadV += y[j] * y[j];
-                        itemCount++;
-                    }
+                    avgResL += x[j];
+                    avgQuadL += x[j] * x[j];
+                    avgResV += y[j];
+                    avgQuadV += y[j] * y[j];
+                    itemCount++;
                 }
 
-                avgResL = itemCount != 0 ? avgResL / step : 0;
-                avgQuadL = itemCount != 0 ? avgQuadL / step : 0;
-                avgResV = itemCount != 0 ? avgResV / step : 0;
-                avgQuadV = itemCount != 0 ? avgQuadV / step : 0;
+                avgResL = itemCount != 0 ? avgResL / itemCount : 0;
+                avgQuadL = itemCount != 0 ? avgQuadL / itemCount : 0;
+                avgResV = itemCount != 0 ? avgResV / itemCount : 0;
+                avgQuadV = itemCount != 0 ? avgQuadV / itemCount : 0;
 
                 var dataTemp = new DataOut();
                 dataTemp.ItemCount = itemCount;
-
                 dataTemp.dV = Math.Sqrt(avgQuadV - avgResV * avgResV);
                 dataTemp.L = avgResL;
                 dataTemp.V = avgResV;
 
-                dataTemp.LeftBorder = leftBorder;
-                dataTemp.RightBolder = rightBorder;
+                dataTemp.LeftBorder = x[startIdx];
+                dataTemp.RightBolder = x[endIdx - 1];
 
                 dataOut.Add(dataTemp);
             }
