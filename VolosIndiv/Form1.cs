@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.IO;
@@ -24,6 +25,9 @@ namespace VolosIndiv
             saveFileDialog1.DefaultExt = "*.txt";
             saveFileDialog1.Filter = "TXT Files|*.txt";
             dataGridView1.ColumnCount = 3;
+            dataGridView2.SortCompare += dataGridView_borders_SortCompare;
+            dataGridView3.SortCompare += dataGridView_borders_SortCompare;
+            dataGridView1.Columns[0].SortMode = DataGridViewColumnSortMode.Automatic;
         }
 
 
@@ -138,14 +142,11 @@ namespace VolosIndiv
                     loopState.Break();
 
                 kilk++;
-                if (kilk % 50 == 0)
-                {
                     Invoke(new Action(() =>
                     {
                         progressBar1.Value = kilk;
-                        label11.Text = "оброблено текстів: {kilk}/{l}";
+                        label11.Text = $"оброблено текстів: {kilk}/{l}";
                     }));
-                }
 
                 using (var stream = new StreamReader(files[i], Encoding.Default, true))
                 {
@@ -168,9 +169,10 @@ namespace VolosIndiv
 
                 dataGridView1.Rows.Clear();
                 for (int i = 0; i < files.Length; i++)
-                    dataGridView1.Rows.Add(Path.GetFileNameWithoutExtension(files[i]), x[i].ToString(), y[i].ToString());
+                    dataGridView1.Rows.Add(Path.GetFileNameWithoutExtension(files[i]), x[i], y[i]);
             }));
         }
+
 
         private void GetDataFromFileTwo()
         {
@@ -203,10 +205,8 @@ namespace VolosIndiv
 
                     if (res.Length >= c2)
                     {
-                        string s1 = res[c1 - 1].Replace('.', ',');
-                        string s2 = res[c2 - 1].Replace('.', ',');
-                        float.TryParse(s1, out v1);
-                        float.TryParse(s2, out v2);
+                        float.TryParse(res[c1 - 1], NumberStyles.Float, CultureInfo.InvariantCulture, out v1);
+                        float.TryParse(res[c2 - 1], NumberStyles.Float, CultureInfo.InvariantCulture, out v2);
                     }
 
                     x.Add(v1);
@@ -400,8 +400,14 @@ namespace VolosIndiv
 
                 var dataTemp = new DataOut();
                 dataTemp.ItemCount = itemCount;
+                
+                dataTemp.dV = Math.Round(
+                    itemCount > 1
+                        ? Math.Sqrt((itemCount / (itemCount - 1)) * (avgQuadV - avgResV * avgResV))
+                        : 0,
+                    4
+                );
 
-                dataTemp.dV = Math.Round(Math.Sqrt(avgQuadV - avgResV * avgResV), 4);
                 dataTemp.L = Math.Round(avgResL, 4);
                 dataTemp.V = Math.Round(avgResV, 4);
                 dataTemp.LeftBorder = Math.Round(leftBorder, 4);
@@ -520,6 +526,24 @@ namespace VolosIndiv
             }
 
             return dataOut;
+        }
+        
+        private void dataGridView_borders_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            if (e.Column.Index == 1)
+            {
+                double num1 = 0;
+                double num2 = 0;
+
+                var val1 = e.CellValue1?.ToString()?.Split('-')?[0];
+                var val2 = e.CellValue2?.ToString()?.Split('-')?[0];
+
+                if (val1 != null) double.TryParse(val1, out num1);
+                if (val2 != null) double.TryParse(val2, out num2);
+
+                e.SortResult = num1.CompareTo(num2);
+                e.Handled = true;
+            }
         }
 
     }
