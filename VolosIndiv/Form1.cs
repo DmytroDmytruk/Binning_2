@@ -400,7 +400,7 @@ namespace VolosIndiv
 
                 var dataTemp = new DataOut();
                 dataTemp.ItemCount = itemCount;
-                
+
                 dataTemp.dV = Math.Round(
                     itemCount > 1
                         ? Math.Sqrt((itemCount / (itemCount - 1)) * (avgQuadV - avgResV * avgResV))
@@ -458,7 +458,14 @@ namespace VolosIndiv
 
                 var dataTemp = new DataOut();
                 dataTemp.ItemCount = itemCount;
-                dataTemp.dV = Math.Round(Math.Sqrt(avgQuadV - avgResV * avgResV), 4);
+
+                dataTemp.dV = Math.Round(
+                    itemCount > 1
+                        ? Math.Sqrt((itemCount / (itemCount - 1)) * (avgQuadV - avgResV * avgResV))
+                        : 0,
+                    4
+                );
+
                 dataTemp.L = Math.Round(avgResL, 4);
                 dataTemp.V = Math.Round(avgResV, 4);
                 dataTemp.LeftBorder = Math.Round(x[startIdx], 4);
@@ -516,7 +523,13 @@ namespace VolosIndiv
                 var dataTemp = new DataOut();
                 dataTemp.ItemCount = itemCount;
 
-                dataTemp.dV = Math.Round(Math.Sqrt(avgQuadV - avgResV * avgResV), 4);
+                dataTemp.dV = Math.Round(
+                    itemCount > 1
+                        ? Math.Sqrt((itemCount / (itemCount - 1)) * (avgQuadV - avgResV * avgResV))
+                        : 0,
+                    4
+                );
+
                 dataTemp.L = Math.Round(avgResL, 4);
                 dataTemp.V = Math.Round(avgResV, 4);
                 dataTemp.LeftBorder = Math.Round(leftBorder, 4);
@@ -527,6 +540,7 @@ namespace VolosIndiv
 
             return dataOut;
         }
+
         
         private void dataGridView_borders_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
         {
